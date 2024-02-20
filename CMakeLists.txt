@@ -6,6 +6,8 @@ set (CMAKE_CXX_STANDARD 17)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(sources "src/board.cpp" "src/board.h" "src/engine.cpp" "src/engine.h" "src/game.cpp" "src/game.h" "src/graphic.cpp" "src/graphic.h" "src/snake.cpp")
+
 # Dependencies
 set(RAYLIB_VERSION 5.0)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
@@ -25,10 +27,8 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
-# Our Project
-
-add_executable(${PROJECT_NAME} snake.cpp)
-#set(raylib_VERBOSE 1)
+add_executable(${PROJECT_NAME} ${sources})
+# set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Web Configurations
