@@ -14,7 +14,7 @@ Graphic::Graphic() : Graphic(25, 25) {}
 
 Graphic::Graphic(int rows, int cols) : rows(rows), cols(cols) {
   InitWindow(kScreenWidth, kScreenHeight, "snake");
-  SetTargetFPS(60);
+  SetTargetFPS(120);
   BeginDrawing();
   ClearBackground(BLACK);
   EndDrawing();
