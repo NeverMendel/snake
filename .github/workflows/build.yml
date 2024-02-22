@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-11, macos-12, macos-13, macos-14, ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022]
+        os: [macos-latest, ubuntu-latest, windows-latest, macos-10.14]
 
     runs-on: ${{ matrix.os }}
 
@@ -18,6 +18,13 @@ jobs:
       - name: Install dependencies on ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         run: sudo apt update && sudo apt install xorg-dev
+      
+      - name: Set arch and os variables on linux and macos
+        id: info
+        if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
+        run:
+          echo "arch=$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" >> $GITHUB_STATE
+          echo "os=$(uname -s | tr '[:upper:]' '[:lower:]')" >> $GITHUB_STATE
         
       - name: Build with CMake
         run: |
@@ -28,12 +35,12 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
         uses: actions/upload-artifact@v4
         with:
-          name: snake-${{ matrix.os }}
+          name: snake-${{ steps.info.outputs.os }}-${{ steps.info.outputs.arch }}
           path: build/snake
 
       - name: Export artifacts on windows
         if: startsWith(matrix.os, 'windows')
         uses: actions/upload-artifact@v4
         with:
-          name: snake-${{ matrix.os }}
+          name: snake-windows-amd64
           path: build/Release/snake.exe
