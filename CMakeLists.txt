@@ -30,6 +30,7 @@ endif()
 add_executable(${PROJECT_NAME} ${sources})
 # set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
+target_link_options(raylib PRIVATE -mwindows)
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
